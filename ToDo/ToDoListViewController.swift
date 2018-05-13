@@ -12,7 +12,14 @@ class ToDoListViewController: UITableViewController {
     
     var itemArray = ["Find Mike", "Buy Eggos", "Destroy Demogorgon"]
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
+        
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
+        
         super.viewDidLoad()
     }
     
@@ -50,6 +57,9 @@ class ToDoListViewController: UITableViewController {
             //triggered by user click on Add Item in UIAlert
             print("Add item Pressed! \(textField.text!)")
             self.itemArray.append(textField.text!)
+            
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+            
             self.tableView.reloadData()
         }
         alert.addTextField { (alertTextField) in                    //this closure is trigged when textField is added.
